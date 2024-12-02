@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void mergeFiles(ifstream& file1, ifstream& file2, ofstream& file3) {
+    vector<int> numbers;
+    int num;
+
+    // Read numbers from the first file
+    while (file1 >> num) {
+        numbers.push_back(num);
+    }
+
+    // Read numbers from the second file
+    while (file2 >> num) {
+        numbers.push_back(num);
+    }
+
+    // Sort the combined numbers
+    sort(numbers.begin(), numbers.end());
+
+    // Write the sorted numbers to the output file
+    for (const int& number : numbers) {
+        file3 << number << endl;
+    }
+
+    // Debugging output
+    cout << "Merged numbers written to file3:" << endl;
+    for (const int& number : numbers) {
+        cout << number << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    ifstream file1("file1.txt"), file2("file2.txt");
+    ofstream file3("file3.txt");
+
+    if (!file1.is_open() || !file2.is_open()) {
+        cerr << "Error: Could not open one or both input files." << endl;
+        return 1;
+    }
+
+    if (!file3.is_open()) {
+        cerr << "Error: Could not open the output file." << endl;
+        return 1;
+    }
+
+    mergeFiles(file1, file2, file3);
+
+    cout << "Merging complete. Check file3.txt for the result." << endl;
+
+    return 0;
+}

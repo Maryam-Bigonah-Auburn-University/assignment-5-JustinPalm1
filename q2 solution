@@ -1,0 +1,61 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+// Function to check if a string is a four-letter word
+bool isFourLetterWord(const string& word) {
+    return word.length() == 4;
+}
+
+// Function to replace a four-letter word with "love" or "Love"
+string replaceWord(const string& word) {
+    if (isFourLetterWord(word)) {
+        if (isupper(word[0])) {
+            return "Love"; // Replace with "Love" if the first letter is uppercase
+        } else {
+            return "love"; // Replace with "love" otherwise
+        }
+    }
+    return word; // Return the original word if it's not four letters
+}
+
+int main() {
+    string line, word, result;
+
+    cout << "Enter a line of text: ";
+    getline(cin, line);
+
+    stringstream ss(line);
+
+    while (ss >> word) {
+        string processedWord;
+        string prefix = "", suffix = "";
+
+        // Extract non-alphabetic prefix
+        while (!word.empty() && !isalpha(word.front())) {
+            prefix += word.front();
+            word.erase(word.begin());
+        }
+
+        // Extract non-alphabetic suffix
+        while (!word.empty() && !isalpha(word.back())) {
+            suffix = word.back() + suffix;
+            word.pop_back();
+        }
+
+        processedWord = replaceWord(word);
+        result += prefix + processedWord + suffix + " ";
+    }
+
+    // Trim trailing space
+    if (!result.empty()) {
+        result.pop_back();
+    }
+
+    cout << "Modified text: " << result << endl;
+
+    return 0;
+}

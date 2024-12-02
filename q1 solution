@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+int main() {
+    string input, output;
+    cout << "Enter a sentence of up to 100 characters: ";
+    getline(cin, input);
+
+    //input length does not exceed 100 characters
+    if (input.length() > 100) {
+        cout << "Input exceeds 100 characters!" << endl;
+        return 1;
+    }
+
+    bool firstLetter = true; //capitalize the first letter
+    bool previousSpace = false; //track consecutive spaces
+
+    for (char ch : input) {
+        if (isspace(ch)) {
+            if (!previousSpace) {
+                output += ' '; //add only one space
+                previousSpace = true;
+            }
+        } else {
+            if (firstLetter && isalpha(ch)) {
+                output += toupper(ch); //capitalize the first letter
+                firstLetter = false;
+            } else {
+                output += tolower(ch); //lowercase other letters
+            }
+            previousSpace = false;
+        }
+    }
+
+    // Ensure the sentence ends with a period
+    if (output.back() != '.') {
+        output += '.';
+    }
+
+    //corrected sentence printed
+    cout << "Corrected sentence: " << output << endl;
+
+    return 0;
+}
